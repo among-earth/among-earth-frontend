@@ -5,7 +5,7 @@ import { setUserNickname } from '../redux/user/user.actions';
 import App from '../components/App';
 
 const mapStateToProps = state => ({
-  user: state.nickname,
+  user: state.user,
 });
 
 const mapDispatchToProps = dispatch => ({
