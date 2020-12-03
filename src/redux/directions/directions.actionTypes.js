@@ -1,0 +1,9 @@
+const directionsActionTypes = {
+  SET_COUNTRY: 'SET_COUNTRY',
+  RESET_COUNTRY: 'RESET_COUNTRY',
+  ADD_DIRECTION: 'ADD_DIRECTION',
+  DELETE_DIRECTION: 'DELETE_DIRECTION',
+  RESET_DIRECTIONS: 'RESET_DIRECTIONS',
+};
+
+export default directionsActionTypes;
