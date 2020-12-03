@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
 
 import { ThemeProvider } from 'styled-components';
 import { Reset } from 'styled-reset';
 
-import TravelInfo from './TravelInfo';
 import LandingPage from './LandingPage';
 import UserInfo from './UserInfo';
 import Directions from './Directions';
@@ -16,19 +15,20 @@ import theme from './styles/theme';
 import GlobalStyle from './styles/globalStyle';
 
 function App({ user, setUserNickname }) {
+  const history = useHistory();
   return (
     <ThemeProvider theme={theme}>
       <Reset />
       <GlobalStyle />
       <Switch>
         <Route exact path='/'>
-          {user ? <TravelInfo /> : <LandingPage />}
+          <LandingPage history={history}/>
         </Route>
-        <Route path='/users'>
-          <UserInfo onLogin={setUserNickname} />
+        <Route path='/user'>
+          <UserInfo history={history} onLogin={setUserNickname} />
         </Route>
         <Route path='/directions'>
-          <Directions />
+          <Directions user={user}/>
         </Route>
         <Route path='/travel/:travel_id'>
           <Travel />
@@ -45,6 +45,8 @@ function App({ user, setUserNickname }) {
 export default App;
 
 App.propTypes = {
-  user: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.object]),
+  user: PropTypes.shape({
+    nickname: PropTypes.string.isRequired,
+  }).isRequired,
   setUserNickname: PropTypes.func.isRequired,
 };

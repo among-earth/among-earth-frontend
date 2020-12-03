@@ -1,7 +1,7 @@
 import types from './user.actionTypes';
 
 const initialState = {
-  nickname: null,
+  nickname: '',
 };
 
 const userReducer = (state = initialState, { type, payload }) => {
