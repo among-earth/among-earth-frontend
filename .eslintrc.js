@@ -30,5 +30,6 @@ module.exports = {
       },
     ],
     'space-before-blocks': ['warn', 'always'],
+    'no-process-env': ['warn'],
   },
 };
