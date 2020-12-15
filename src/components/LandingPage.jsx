@@ -1,25 +1,114 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
+import styled, { keyframes } from 'styled-components';
 
-function LandingPage({ history }) {
+import spinAirplane from '../assets/spinAirplane.png';
+import bg from '../assets/bg.mp4';
+
+const LandingPage = () => {
+  const history = useHistory();
 
   const moveToPath = path => history.push(path);
 
   return (
-    <div>
-      <div>
+    <Container>
+      <TitleContainer>
+        <div className="circTxt"></div>
         <span>AMONG</span>
         <span>EARTH</span>
-      </div>
-      <button onClick={moveToPath('/user')}>START</button>
-    </div>
+      </TitleContainer>
+      <ButtonContainer>
+        <img src={spinAirplane} alt='rotaionButton' />
+        <button onClick={() => moveToPath('/user')}>GO!</button>
+      </ButtonContainer>
+      <video
+        type='video/mp4'
+        width='300px'
+        src={bg}
+        autoPlay
+        loop
+        muted
+      />
+    </Container>
   );
-}
+};
+
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #000;
+
+  video {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    opacity: 0.6;
+  }
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 999;
+  margin-bottom: 50px;
+
+  span {
+    font-family: 'Limelight', cursive;
+    font-size: 240px;
+    color: ${({theme}) => theme.lemonYellow};
+  }
+`;
+
+const textSpin = keyframes`
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+
+  div {
+    width: 160px;
+  }
+
+  img {
+    width: 120px;
+    position: relative;
+    animation: ${textSpin} infinite 6s linear;
+    transform-origin: center;
+  }
+
+  button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    position: absolute;
+
+    &:hover {
+      transform: scale(1.2);
+      transition-duration: 0.4s;
+    }
+  }
+`;
 
 export default LandingPage;
-
-LandingPage.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-};

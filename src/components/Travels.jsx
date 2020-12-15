@@ -1,11 +1,11 @@
 import React from 'react';
 
-function Travels() {
+const Travels = () => {
   return (
     <div>
       Travels Page
     </div>
   );
-}
+};
 
 export default Travels;

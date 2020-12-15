@@ -1,11 +1,15 @@
 import React from 'react';
 
-function Travel() {
+const Travel = () => {
+  
+
+
+
   return (
     <div>
       Travel Page
     </div>
   );
-}
+};
 
 export default Travel;
