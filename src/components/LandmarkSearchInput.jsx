@@ -12,7 +12,7 @@ const LandmarkSearchInput = ({
   setInputValue,
   landmarkList,
   selectLandmark,
-  setSelect,
+  setLandmarkSelect,
   disabled,
   setDisabled,
 }) => {
@@ -31,7 +31,7 @@ const LandmarkSearchInput = ({
 
     setInputValue(pickedKoreanName);
     setDisabled(true);
-    setSelect(true);
+    setLandmarkSelect(true);
   };
 
   const searchOptions = {
@@ -81,7 +81,7 @@ LandmarkSearchInput.propTypes = {
   setInputValue: PropTypes.func.isRequired,
   landmarkList: PropTypes.array.isRequired,
   selectLandmark: PropTypes.func.isRequired,
-  setSelect: PropTypes.func.isRequired,
+  setLandmarkSelect: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
   setDisabled: PropTypes.func.isRequired,
 };

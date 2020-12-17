@@ -6,11 +6,10 @@ import styled from 'styled-components';
 import RegionSearchInput from './RegionSearchInput';
 import LandmarkSearchInput from './LandmarkSearchInput';
 import Maps from './Maps';
-import { fetchNearestPlacesFromGoogle } from '../utils/api';
+import { fetchNearestPlacesFromGoogle, postAllPoints } from '../utils/api';
 import Modal from './Modal';
 import Header from './Header';
 import Footer from './Footer';
-
 
 import { GrLocation } from 'react-icons/gr';
 
@@ -24,14 +23,15 @@ const Directions = ({
   calculateTotalDistance,
   points,
   getAllPoints,
+  travelId,
 }) => {
   const history = useHistory();
   const [countryCode, setCountryCode] = useState('');
-  const [isCountrySelect, setCountrySelect] = useState(false);
+  const [isCountrySelected, setCountrySelect] = useState(false);
   const [landmarkInputValue, setLandmarkInputValue] = useState('');
   const [countryInputValue, setCountryInputValue] = useState('');
   const [recommendList, setRecommendList] = useState([]);
-  const [isSelected, setSelect] = useState(false);
+  const [isLandmarkSelected, setLandmarkSelect] = useState(false);
   const [isDisabled, setDisabled] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -54,7 +54,7 @@ const Directions = ({
         console.log(err);
       }
     })();
-  }, [isSelected]);
+  }, [isLandmarkSelected]);
 
   const handleClick = ev => {
     const { name, id, value, className} = ev.target;
@@ -74,15 +74,24 @@ const Directions = ({
     setModalOpen(true);
   };
 
+  console.log(points)
+
   const handleModalButton = () => {
-    history.push('/travels/:travel_id');
+    history.push(`/travels/${travelId}`,{ points: points, trvelId: travelId});
+    // try {
+    //   await postAllPoints(points, travelId);
+
+    //   history.push(`/travels/${travelId}`,{ points: points, trvelId: travelId});
+    // } catch (err) {
+    //   console.log(err);
+    // }
   };
 
   return (
     <Container>
       <Header />
       <form onSubmit={submitTravelData}>
-        {isCountrySelect ?
+        {isCountrySelected ?
           <LandmarkWrapper>
             <p><span>{country}</span>에서 가고 싶은 장소를 입력해 주세요.</p>
             <LandmarkSearchInput
@@ -93,7 +102,7 @@ const Directions = ({
               selectLandmark={selectLandmark}
               setNearLandmark={fetchNearestPlacesFromGoogle}
               setRecommendList={setRecommendList}
-              setSelect={setSelect}
+              setLandmarkSelect={setLandmarkSelect}
               disabled={isDisabled}
               setDisabled={setDisabled}
             />
@@ -113,7 +122,7 @@ const Directions = ({
         }
       </form>
       <Recommends>
-        {isSelected &&
+        {isLandmarkSelected &&
           <>
           <div>근처에 있는 추천 장소</div>
           {recommendList && recommendList.map(recommend => {
@@ -290,6 +299,7 @@ Directions.propTypes = {
   calculateTotalDistance: PropTypes.func.isRequired,
   points: PropTypes.array.isRequired,
   getAllPoints: PropTypes.func.isRequired,
+  travelId: PropTypes.string.isRequired,
 };
 
 // FIXME: image 가져오기

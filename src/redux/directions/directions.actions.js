@@ -19,3 +19,8 @@ export const getAllPoints = points => ({
   type: types.GET_ALL_POINTS,
   payload: { points },
 });
+
+export const setTravelId = travelId => ({
+  type: types.SET_TRAVEL_ID,
+  payload: { travelId },
+});

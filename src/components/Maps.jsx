@@ -19,13 +19,17 @@ const Maps = ({ landmarkList, setTotalDistance, setPoints }) => {
 
     const origin = new google.maps.LatLng(newYorkData[0].coordinates.lat, newYorkData[0].coordinates.lng);
     const destination = new google.maps.LatLng(newYorkData[newYorkData.length - 1].coordinates.lat, newYorkData[newYorkData.length - 1].coordinates.lng);
-    const waypoints = [];
-    const routes = newYorkData.splice(1, 3);
+    // TODO: comback
+    // const waypoints = [];
+    // const routes = newYorkData.splice(1, 3);
 
-    for(let i = 0; i < routes.length; i++) {
-      const location = { location: new google.maps.LatLng(routes[i].coordinates.lat, routes[i].coordinates.lng)};
-      waypoints.push(location);
-    }
+    // for(let i = 0; i < routes.length; i++) {
+    //   const location = { location: new google.maps.LatLng(routes[i].coordinates.lat, routes[i].coordinates.lng)};
+    //   waypoints.push(location);
+    // }
+    const waypoints = [];
+    const location = { location: new google.maps.LatLng(newYorkData[1].coordinates.lat, newYorkData[1].coordinates.lng) };
+    waypoints.push(location);
 
     const request = {
       origin: origin,
@@ -39,18 +43,47 @@ const Maps = ({ landmarkList, setTotalDistance, setPoints }) => {
       console.log(result, 'result');
       if (status === google.maps.DirectionsStatus.OK) {
         const totalDistance = computeTotalDistance(result);
-        const { overview_path } = result.routes[0];
+        // const { overview_path } = result.routes[0];
 
-        for (let i = 0; i < overview_path.length - 1; i++) {
-          const start = overview_path[i];
-          const end = overview_path[i + 1];
-          const overview_head = google.maps.geometry.spherical.computeHeading(start, end);
+        // for (let i = 0; i < overview_path.length - 1; i++) {
+        //   const start = overview_path[i];
+        //   const end = overview_path[i + 1];
+        //   const overview_head = google.maps.geometry.spherical.computeHeading(start, end);
 
-          setPoints([{
-            head: overview_head,
-            lat: overview_path[i].lat(),
-            lng: overview_path[i].lng(),
-          }]);
+        //   setPoints([{
+        //     head: overview_head,
+        //     lat: overview_path[i].lat(),
+        //     lng: overview_path[i].lng(),
+        //   }]);
+        // }
+
+        const { legs } = result.routes[0];
+
+        for (let i = 0; i < legs.length; i++) {
+          const steps = legs[i].steps;
+          for (let j = 0; j < steps.length; j++) {
+            const nextSegment = steps[j].path;
+            const start = steps[j].start_location;
+            const end = steps[j].end_location;
+            const heading = google.maps.geometry.spherical.computeHeading(start, end);
+
+            // TODO: delete cutSegment
+            const cutSegment = nextSegment.splice(1, 5);
+            cutSegment.forEach(segment => {
+              setPoints([{
+                head: heading,
+                lat: segment.lat(),
+                lng: segment.lng(),
+              }]);
+            });
+            // for (let k = 0; k < nextSegment.length; k++) {
+            //   setPoints([{
+            //     head: heading,
+            //     lat: nextSegment[i].lat(),
+            //     lng: nextSegment[i].lng(),
+            //   }]);
+            // }
+          }
         }
 
         setDirections(result);

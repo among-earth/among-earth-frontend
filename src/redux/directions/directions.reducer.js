@@ -1,6 +1,8 @@
 import types from './directions.actionTypes';
+import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
+  id: uuidv4(),
   country: '',
   landmarkList: [],
   totalDistance: 0,
@@ -30,7 +32,7 @@ const directionsReducer = (state = initialState, { type, payload }) => {
     case types.GET_ALL_POINTS: {
       return {
         ...state,
-        points: [...state.points, ...payload.points]
+        points: [...state.points, ...payload.points],
       };
     }
     default:

@@ -33,25 +33,25 @@ const newYorkData = [
     name: '엠파이어 스테이트 빌딩',
   },
   {
-    coordinates: { lat: 40.7587402, lng: -73.9786736 },
-    id: 'ChIJ9U1mz_5YwokRosza1aAk0jM',
-    name: '록펠러 센터',
+    coordinates: { lat: 40.7492258, lng: -73.9813971 },
+    id: 'ChIJ3453OAdZwokRja92OOKCugM',
+    name: 'The morgan library',
   },
-  {
-    coordinates: { lat: 40.7601775, lng: -73.9843631 },
-    id: 'ChIJHfPuClZYwokRP2wzLQjhuEI',
-    name: 'M&M World',
-  },
-  {
-    coordinates: { lat: 40.7651258, lng: -73.97992359999999 },
-    id: 'ChIJ2RFUePdYwokRd5R6XF6xFD0',
-    name: 'Carnegie Hall',
-  },
-  {
-    coordinates: { lat: 40.7624284, lng: -73.973794 },
-    id: '"ChIJrc9T9fpYwokRdvjYRHT8nI4"',
-    name: '"트럼프 타워"',
-  },
+  // {
+  //   coordinates: { lat: 40.7601775, lng: -73.9843631 },
+  //   id: 'ChIJHfPuClZYwokRP2wzLQjhuEI',
+  //   name: 'M&M World',
+  // },
+  // {
+  //   coordinates: { lat: 40.7651258, lng: -73.97992359999999 },
+  //   id: 'ChIJ2RFUePdYwokRd5R6XF6xFD0',
+  //   name: 'Carnegie Hall',
+  // },
+  // {
+  //   coordinates: { lat: 40.7624284, lng: -73.973794 },
+  //   id: '"ChIJrc9T9fpYwokRdvjYRHT8nI4"',
+  //   name: '"트럼프 타워"',
+  // },
 ];
 
 export { romeData, newYorkData };
