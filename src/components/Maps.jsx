@@ -68,7 +68,8 @@ const Maps = ({ landmarkList, setTotalDistance, setPoints }) => {
             const heading = google.maps.geometry.spherical.computeHeading(start, end);
 
             // TODO: delete cutSegment
-            const cutSegment = nextSegment.splice(1, 5);
+            const cutSegment = nextSegment.slice(1, 5);
+            console.log(cutSegment, 'cutSegment')
             cutSegment.forEach(segment => {
               setPoints([{
                 head: heading,

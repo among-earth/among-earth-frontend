@@ -36,13 +36,13 @@ const Travel = () => {
     setIsLoading(false);
   };
 
-  const draw = (ctx, paths, frameCount) => {
-    let image = new Image();
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    image.src = paths[frameCount];
+  // const draw = (ctx, paths, frameCount) => {
+  //   let image = new Image();
+  //   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  //   image.src = paths[frameCount];
 
-    ctx.drawImage(image, 0, 0, 300, 300);
-  };
+  //   ctx.drawImage(image, 0, 0, 300, 300);
+  // };
 
   useEffect(() => {
     if(points) {
@@ -62,9 +62,11 @@ const Travel = () => {
   }, [fetchUrls]);
 
   return (
-    <div>
-      {isLoading && (<h1>...isLoading</h1>)}
-      {<Canvas paths={imagePaths} />}
+    <div style={{height: '800px', width: '800px'}}>
+      {isLoading
+       ? <h1>...isLoading</h1>
+       : <Canvas paths={imagePaths} />
+      }
       {/* {imagePaths && imagePaths.map((path, i) => {
         return (
           <img key={i} style={{ width:'640px', height:'640px'}} src={path} alt='streetViewImage'></img>
