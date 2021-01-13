@@ -6,15 +6,14 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Noto Sans KR', sans-serif;
     font-weight: 400;
     box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    background-color: ${({theme})=> theme.green}};
+
+  .root {
+    width: 100%;
+    height: 100%;
   }
 `;
-
-/*
-"IBM Plex Sans Roman", Times
-'Ultra'
-'Playfair Display SC'
-'Montserrat Alternates', sans-serif
-'Poiret One', cursive;
-*/
 
 export default GlobalStyle;
