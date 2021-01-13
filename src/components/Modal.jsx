@@ -1,36 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import ModalPortal from './ModalPortal';
-import { GrFormClose } from 'react-icons/gr';
+import { wooble } from './styles/keyframes';
+
+import { MdReplay } from 'react-icons/md';
 
 function Modal({
   children,
-  onClose,
-  maskClosable,
-  closable,
   isModalOpen,
   className,
+  onClose,
 }) {
-  useEffect(() => {
-    console.log(isModalOpen)
-  }, [])
-
-
-  const onMaskClick = e => {
-    console.log(e)
-    if (e.target === e.crrentTarget) {
-      onClose(e);
-    }
-  };
-
-  const close = e => {
-    if (onClose) {
-      onClose(e);
-    }
-  };
-
   return (
     <ModalPortal elementId='modal'>
       <ModalOverlay visible={isModalOpen} />
@@ -40,12 +22,8 @@ function Modal({
         isModalOpen={isModalOpen}
       >
         <ModalInner tabIndex={0} className='modal-inner'>
-          {closable &&
-            <>
-            <button className='modal-close' onClick={onClose}>다시 할래요</button>
-            </>
-          }
-          {children}
+          <button className='modal-again' onClick={onClose}><MdReplay /></button>
+           {children}
         </ModalInner>
       </ModalWrapper>
     </ModalPortal>
@@ -54,7 +32,7 @@ function Modal({
 
 const ModalOverlay = styled.div`
   z-index: 999;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.5);
   position: fixed;
   left: 0;
   top: 0;
@@ -74,32 +52,73 @@ const ModalWrapper = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 999;
   overflow: auto;
-  outline: 0;
+  outline: none;
 `;
 
 const ModalInner = styled.div`
   box-sizing: border-box;
   position: relative;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
-  background-color: #fff;
+  background-color: ${({theme}) => theme.orangeYellow};
   border-radius: 10px;
-  width: 500px;
-  max-width: 600px;
+  width: 800px;
+  max-width: 800px;
   top: 50%;
   transform: translateY(-50%);
   margin: 0 auto;
   padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  h1 {
+    font-size: 20px;
+    margin-bottom: 30px;
+  }
+
+  .modal-again {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    border: none;
+    font-size: 30px;
+    color: ${({theme}) => theme.ivory};
+    background-color: ${({theme}) => theme.coralRed};
+    outline: none;
+    cursor: pointer;
+  }
+
+  .modal-ok {
+    width: 100px;
+    cursor: pointer;
+    text-align: center;
+    background-color: ${({theme}) => theme.green};
+    height: 50px;
+    border-radius: 6px;
+    color: ${({theme}) => theme.ivory};
+    font-family: 'Limelight', cursive;
+    font-size: 20px;
+    margin-top: 30px;
+    outline: none;
+    cursor: pointer;
+
+    &:hover {
+      animation: ${wooble} 1s 1;
+    }
+  }
 `;
 
 export default Modal;
 
 Modal.propTypes = {
   children: PropTypes.node,
-  onClose: PropTypes.func,
-  maskClosable: PropTypes.bool,
-  closable: PropTypes.bool,
   isModalOpen: PropTypes.bool,
   className: PropTypes.node,
+  onClose: PropTypes.func.isRequired,
 };
