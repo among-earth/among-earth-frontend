@@ -1,30 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import PlacesAutocomplete, { geocodeByAddress } from 'react-places-autocomplete';
 import styled from 'styled-components';
+import PlacesAutocomplete, { geocodeByAddress } from 'react-places-autocomplete';
 
-const RegionSearchInput = ({
-  country,
+function RegionSearchInput({
   setCountry,
-  setCountryCode,
   setCountrySelect,
   inputValue,
-  setInputValue,
-}) => {
-
-  const handleInputChange = ev => {
-    setInputValue(ev);
-  };
-
+  error,
+  onError,
+  onChange,
+}) {
   const handleSelect = async value => {
     const results = await geocodeByAddress(value);
     const countryCode = results[0].address_components[0].short_name;
 
-    setCountryCode(countryCode);
+    setCountry({ country: { name: value, code: countryCode } });
     setCountrySelect(true);
-    setCountry(value);
-    setInputValue(value);
   };
 
   const searchOptions = {
@@ -33,23 +26,28 @@ const RegionSearchInput = ({
 
   return (
     <PlacesAutocomplete
+      onError={onError}
       value={inputValue}
-      onChange={handleInputChange}
+      onChange={val => onChange(val)}
       onSelect={handleSelect}
       searchOptions={searchOptions}
       shouldFetchSuggestions={inputValue.length > 1}
+      debounce={1000}
     >
-      {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+      {({ getInputProps, suggestions, getSuggestionItemProps, loading, displaySuggestions }) => (
         <Wrapper>
           <input {...getInputProps({ placeholder: '가고 싶은 나라를 입력 해 주세요.' })} />
-            {loading ? <Suggestion>...loading</Suggestion> : null}
-
+            {loading ? <Suggestion>...Loading</Suggestion> : null}
+            {error &&
+              <ErrorBox>
+                <h1>검색 결과가 없습니다.</h1>
+              </ErrorBox>
+            }
             {suggestions.map(suggestion => {
               const style = {
                 color: suggestion.active ? '#eba13d' : '#efe1d9',
                 borderBottom: suggestion.active ? '1px solid #eba13d' : 'none',
               };
-
               return (
                 <Suggestion key={suggestion.description} {...getSuggestionItemProps(suggestion, { style })}>
                   {suggestion.description}
@@ -60,22 +58,26 @@ const RegionSearchInput = ({
       )}
     </PlacesAutocomplete>
   );
-};
-
-export default RegionSearchInput;
-
-RegionSearchInput.propTypes = {
-  country: PropTypes.string.isRequired,
-  setCountry: PropTypes.func.isRequired,
-  setCountryCode: PropTypes.func.isRequired,
-  setCountrySelect: PropTypes.func.isRequired,
-  inputValue: PropTypes.string.isRequired,
-  setInputValue: PropTypes.func.isRequired,
-};
+}
 
 const Wrapper = styled.div`
   margin-top: 20px;
+
 `;
+
+const ErrorBox = styled.div`
+  width: 100%;
+  border-bottom: 1px solid #BC3A46;
+  text-align: center;
+
+  h1 {
+    color: ${({theme}) => theme.coralRed};
+    font-size: 20px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+`;
+
 
 const Suggestion = styled.div`
   width: 340px;
@@ -91,3 +93,14 @@ const Suggestion = styled.div`
   margin-bottom: '20px';
   transition-duration: 0.4s;
 `;
+
+export default RegionSearchInput;
+
+RegionSearchInput.propTypes = {
+  setCountry: PropTypes.func.isRequired,
+  setCountrySelect: PropTypes.func.isRequired,
+  inputValue: PropTypes.string.isRequired,
+  error: PropTypes.bool.isRequired,
+  onError: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
