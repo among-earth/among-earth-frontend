@@ -1,22 +1,30 @@
-import React, { useEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { useSelector } from 'react-redux';
 
-import Canvas from './Canvas';
+import styled from 'styled-components';
 
-const Travel = () => {
-  const [fetchUrls, setFetchUrls] = useState([]);
+import Header from './Header';
+import Footer from './Footer';
+import Loading from './Loading';
+import { delay } from '../utils/delay';
+
+const Canvas = lazy(async () => {
+  await delay(1600);
+  return import('./Canvas');
+});
+
+function Travel() {
+  const [streetviewUrls, setStreetviewUrls] = useState([]);
   const [imagePaths, setImagePaths] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  // const [isSelectUrls, setIsSelectUrls] = useState(false);
-  // const [isStartCanvas, setIsStartCanvas] = useState(false);
 
-  const { travelId, points } = useSelector(state => ({
-    travelId : state.directions.id,
+  const { nickname, travelId, points } = useSelector(state => ({
+    nickname: state.user.nickname,
+    travelId: state.directions.id,
     points: state.directions.points,
   }));
 
-  const fetchAll = async urls => {
+  const getAllImagePaths = async urls => {
     let copyPaths = [];
     setIsLoading(true);
 
@@ -30,53 +38,53 @@ const Travel = () => {
 
       setImagePaths([...copyPaths]);
     } catch (err) {
-      console.log(err);
+      const { response } = err;
+      if (response) alert('이미지 경로를 불러들이는데 실패했습니다. 다시 시도해주세요.');
     }
 
     setIsLoading(false);
   };
 
-  // const draw = (ctx, paths, frameCount) => {
-  //   let image = new Image();
-  //   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  //   image.src = paths[frameCount];
-
-  //   ctx.drawImage(image, 0, 0, 300, 300);
-  // };
-
   useEffect(() => {
-    if(points) {
-      let copyUrls = [];
+    if (points) {
+      let urlList = [];
 
       points.forEach(point => {
         const { lat, lng, head } = point;
-        copyUrls.push(`https://maps.googleapis.com/maps/api/streetview?size=640x640&pitch=40&fov=100&location=${lat},${lng}&heading=${head}&source=outdoor&key=AIzaSyDXgeijd6uNjxKp9CyhpY-z_KKKYH5mXZ8`);
+        urlList.push(`https://maps.googleapis.com/maps/api/streetview?size=640x640&pitch=30&fov=100&location=${lat},${lng}&heading=${head}&source=outdoor&key=AIzaSyDXgeijd6uNjxKp9CyhpY-z_KKKYH5mXZ8`);
       });
 
-      setFetchUrls([...copyUrls]);
+      setStreetviewUrls([...urlList]);
     }
   }, []);
 
   useEffect(() => {
-    fetchAll(fetchUrls);
-  }, [fetchUrls]);
+    getAllImagePaths(streetviewUrls);
+  }, [streetviewUrls]);
 
   return (
-    <div style={{height: '800px', width: '800px'}}>
-      {isLoading
-       ? <h1>...isLoading</h1>
-       : <Canvas paths={imagePaths} />
-      }
-      {/* {imagePaths && imagePaths.map((path, i) => {
-        return (
-          <img key={i} style={{ width:'640px', height:'640px'}} src={path} alt='streetViewImage'></img>
-        );
-      })} */}
-    </div>
+    <TravelContainer>
+      <Header />
+      <Suspense fallback={<Loading />}>
+        {isLoading
+          ? <Loading />
+          : <Canvas paths={imagePaths} travelId={travelId} points={points}/>
+        }
+      </Suspense>
+      <Footer />
+    </TravelContainer>
   );
-};
+}
+
+const TravelContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: ${({theme}) => theme.coralRed};
+  position: relative;
+`;
 
 export default Travel;
-
-Travel.propTypes = {
-};
