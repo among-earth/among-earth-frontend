@@ -15,10 +15,10 @@ import PATH from '../constants/constants';
 import theme from './styles/theme';
 import GlobalStyle from './styles/globalStyle';
 
-const App = ({
+function App({
   user,
   setUserNickname,
-}) => {
+}) {
   return (
     <ThemeProvider theme={theme}>
       <Reset />
@@ -43,7 +43,7 @@ const App = ({
       </Switch>
     </ThemeProvider>
   );
-};
+}
 
 export default App;
 

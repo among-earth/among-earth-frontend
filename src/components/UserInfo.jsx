@@ -1,45 +1,33 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import styled, { keyframes } from 'styled-components';
-
 import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+import styled from 'styled-components';
 
 import Header from './Header';
 import Footer from './Footer';
+import { wooble } from './styles/keyframes';
 
-const wooble = keyframes`
-  25% {
-    transform: rotate(15deg);
-  }
-  50% {
-    transform: rotate(-30deg);
-  }
-  75% {
-    transform: rotate(5deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-`;
-
-const UserInfo = ({ onLogin }) => {
+function UserInfo({ onLogin }) {
   const history = useHistory();
-  const [input, setInput] = useState('');
+  const [inputValue, setInputValue] = useState('');
 
   const handleInputChange = ev => {
-    setInput(ev.target.value);
+    const { value } = ev.target;
+
+    setInputValue(value);
   };
 
   const submitUserNickname = ev => {
     ev.preventDefault();
 
-    if(input.length < 2) {
-      console.log('닉네임은 한 글자 이상 입력 해 주세요.');
-      setInput('');
+    if(inputValue.length < 2) {
+      alert('닉네임은 한 글자 이상 입력 해 주세요.');
+      setInputValue('');
       return;
     }
 
-    onLogin(input);
+    onLogin(inputValue);
     history.push('/directions');
   };
 
@@ -53,17 +41,17 @@ const UserInfo = ({ onLogin }) => {
             onChange={handleInputChange}
             type='text'
             name='nickname'
-            value={input}
+            value={inputValue}
             placeholder='Nickname'
             autoComplete='off'
           />
-          <input wooble type='submit' value='OK'/>
+          <input type='submit' value='OK!'/>
         </form>
       </Wrapper>
       <Footer />
     </Container>
   );
-};
+}
 
 const Container = styled.div`
   width: 100vw;
@@ -71,16 +59,14 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({theme}) => theme.coralRed};
+  background-color: ${({theme}) => theme.green};
   position: relative;
 `;
-
 
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  border-radius: 20px;
 
   form {
     display: flex;
