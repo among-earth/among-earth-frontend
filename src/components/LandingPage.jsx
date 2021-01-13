@@ -1,15 +1,12 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 import spinAirplane from '../assets/spinAirplane.png';
 import bg from '../assets/bg.mp4';
+import Button from './Button';
+import { textSpin } from './styles/keyframes';
 
-const LandingPage = () => {
-  const history = useHistory();
-
-  const moveToPath = path => history.push(path);
-
+function LandingPage() {
   return (
     <Container>
       <TitleContainer>
@@ -19,7 +16,7 @@ const LandingPage = () => {
       </TitleContainer>
       <ButtonContainer>
         <img src={spinAirplane} alt='rotaionButton' />
-        <button onClick={() => moveToPath('/user')}>GO!</button>
+        <Button path={'/user'} isLanding={true} />
       </ButtonContainer>
       <video
         type='video/mp4'
@@ -31,7 +28,7 @@ const LandingPage = () => {
       />
     </Container>
   );
-};
+}
 
 const Container = styled.div`
   width: 100vw;
@@ -68,15 +65,6 @@ const TitleContainer = styled.div`
   }
 `;
 
-const textSpin = keyframes`
-  from {
-    transform: rotate(360deg);
-  }
-  to {
-    transform: rotate(0deg);
-  }
-`;
-
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -92,22 +80,6 @@ const ButtonContainer = styled.div`
     position: relative;
     animation: ${textSpin} infinite 6s linear;
     transform-origin: center;
-  }
-
-  button {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 18px;
-    font-weight: 600;
-    outline: none;
-    cursor: pointer;
-    position: absolute;
-
-    &:hover {
-      transform: scale(1.2);
-      transition-duration: 0.4s;
-    }
   }
 `;
 
