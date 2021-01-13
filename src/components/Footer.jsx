@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { VscGithub } from 'react-icons/vsc';
 
-const Footer = () => {
+function Footer() {
   return (
     <Container>
       <Socials>
@@ -21,7 +21,7 @@ const Footer = () => {
       </div>
     </Container>
   );
-};
+}
 
 const Container = styled.div`
   position: absolute;

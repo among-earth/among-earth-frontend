@@ -1,14 +1,17 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+
 import styled from 'styled-components';
 
-import { FaGlobeAsia } from 'react-icons/fa';
+function Header() {
+  const history = useHistory();
+  const moveToMain = () => history.push('/');
 
-const Header = () => {
   return (
     <Container>
       <MenuWrapper>
-        <span>MAIN</span>
-        <span>TRAVELS</span>
+        <button onClick={moveToMain}>MAIN</button>
+        <button>TRAVELS</button>
       </MenuWrapper>
       <TitleWrapper>
         <span>AMONG</span>
@@ -16,7 +19,7 @@ const Header = () => {
       </TitleWrapper>
     </Container>
   );
-};
+}
 
 const Container = styled.div`
   width: 100%;
@@ -30,10 +33,11 @@ const Container = styled.div`
   font-family: 'Limelight', cursive;
   color: ${({theme}) => theme.orangeYellow};
   letter-spacing: 1px;
+  z-index: 999;
 `;
 
 const TitleWrapper = styled.div`
-  font-size: 24px;
+  font-size: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,11 +45,8 @@ const TitleWrapper = styled.div`
   margin: 0 auto;
   width: 100%;
 
-  hr {
-    display: block;
-    width: 140px;
-    border-width: 1px;
-    border: 1px solid ${({theme}) => theme.orangeYellow}
+  span {
+    cursor: pointer;
   }
 `;
 
@@ -54,13 +55,20 @@ const MenuWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  span {
+  button {
     font-size: 18px;
     letter-spacing: 2;
     cursor: pointer;
+    border: none;
+    background: none;
+    font-family: 'Limelight', cursive;
+    color: ${({theme}) => theme.orangeYellow};
+    font-size: 22px;
+    z-index: 999;
+    outline: none;
   }
 
-  span:first-child {
+  button:first-child {
     margin: 30px;
   }
 `;
