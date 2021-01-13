@@ -27,7 +27,7 @@ const directionsReducer = (state = initialState, { type, payload }) => {
     case types.CALCULATE_TOTAL_DISTANCE:
       return {
         ...state,
-        totalDistance: payload.totalDistance,
+        totalDistance: payload.totalDistance * 1000,
       };
     case types.GET_ALL_POINTS: {
       return {

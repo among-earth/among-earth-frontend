@@ -2,7 +2,7 @@ import types from './directions.actionTypes';
 
 export const selectCountry = country => ({
   type: types.SET_COUNTRY,
-  payload: { country },
+  payload: country,
 });
 
 export const selectLandmark = landmarkList => ({

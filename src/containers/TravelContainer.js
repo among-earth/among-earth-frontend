@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { calculateTotalDistance, selectCountry, selectLandmark, getAllPoints, setTravelId } from '../redux/directions/directions.actions';
+import { selectCountry } from '../redux/directions/directions.actions';
 
 import Travel from '../components/Travel';
 
