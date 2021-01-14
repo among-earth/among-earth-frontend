@@ -60,25 +60,23 @@ Among Earth는 구글스트리트 뷰를 이용한 가상 여행을 경험할 �
 
 Local 환경에서 실행하기 위한 사전 준비가 필요합니다.
 
-- [Google Maps API Key](https://firebase.google.com/?hl=ko)
-- [MongoDB](https://www.mongodb.com/)
-- [Open SSL](https://www.ibm.com/support/knowledgecenter/SSMNED_5.0.0/com.ibm.apic.cmc.doc/task_apionprem_gernerate_self_signed_openSSL.html)
+- [Google Maps API Key](https://cloud.google.com/maps-platform/?utm_source=google&utm_medium=cpc&utm_campaign=FY18-Q2-global-demandgen-paidsearchonnetworkhouseads-cs-maps_contactsal_saf&utm_content=text-ad-none-none-DEV_c-CRE_460848633529-ADGP_Hybrid%20%7C%20AW%20SEM%20%7C%20BKWS%20~%20Google%20Maps%20API%20Key-KWID_43700035216023629-aud-581578347266%3Akwd-298247230705-userloc_1030760&utm_term=KW_google%20maps%20api%20key-ST_google%20maps%20api%20key&gclid=Cj0KCQiA0fr_BRDaARIsAABw4Et9xmLM_rakYTnqBv9JqmyA-Ws2uNNtmuXAquyx3lQ804b8sIW7DYwaAs65EALw_wcB)
+- [AWS S3](https://aws.amazon.com/ko/)
 
 #### Frontend
 
-Root 디렉토리에 `.env` 파일을 생성하고, 사전에 준비한 Firebase API Key를 입력합니다.
+Root 디렉토리에 `.env` 파일을 생성하고, 사전에 준비한 Google Maps API Key를 입력합니다.
 
 ```
 
-REACT_APP_FIREBASE_API_KEY=<YOUR Firebase API Key>
-REACT_APP_FIREBASE_AUTH_DOMAIN=<Your Firebase Auth Domain>
+REACT_APP_GOOGLE_API_KEY=<YOUR Google maps API Key>
 
 ```
 
 ```
 
-git clone https://github.com/sool-tok/sool-tok-frontend
-cd sool-tok
+git clone https://github.com/dohee3520/among-earth-frontend
+cd among-earth
 npm install
 npm start
 
@@ -86,19 +84,24 @@ npm start
 
 #### Backend
 
-Root 디렉토리에 `.env` 파일을 생성하고, 사전에 준비한 MongoDB Url과 JWT의 Secret Key를 입력합니다.
+Root 디렉토리에 `.env` 파일을 생성하고, 사전에 준비한 Google Maps API KEY와 AWS S3 정보를 입력합니다.
 
 ```
 
-MONGODB_URL=<Your MongoDB URL>
-TOKEN_SECRET_KEY=<Your JWT Signature Secret KEY>
+GOOGLE_API_KEY=<Your Google maps API KEY>
+
+AWS_BUCKET_NAME=<Your bucket name>
+AWS_ACCESS_KEY_ID=<Your AWS acess KEY>
+AWS_SECRET_ACCESS_KEY=<Your AWS secret access KEY>
+AWS_REGION=<Your AWS Region>
+AWS_Uploaded_File_URL_LINK=<Your AWS uploaded file URL link>
 
 ```
 
 ```
 
-git clone https://github.com/sool-tok/sool-tok-backend
-cd sool-tok
+git clone https://github.com/dohee3520/among-earth-backend
+cd among-earth
 npm install
 npm start
 
@@ -166,10 +169,10 @@ npm start
 
 ## Conclusions
 
-## 주도적 계획과 능동적 실행
+### 주도적 계획과 능동적 실행
 
 개인프로젝트를 진행함에 앞서 걱정이 컸습니다. 팀 프로젝트 때는 팀원들 끼리 회의를 자주 진행한 후 결과를 도출해 냈지만, 기획과 실행 모두를 스스로 결정하여 진행하다보니 '내가 이렇게 하는게 맞는건가?' 라는 생각에 난관을 많이 겪었습니다. 하지만 프로젝트를 모두 끝낸 시점에서 되돌아보니 무엇을 고민했고, 어떤 문제점을 정확히 파악해 어떻게 개선시켰는가의 모든 과정을 스스로 해냈다는게 이 프로젝트에서 가장 많이 배운 점입니다.
 
-## 아키텍처의 중요성
+### 아키텍처의 중요성
 
 기획 초반에 세밀한 구성 설계를 했다고 생각했음에도 불구하고 예기치 못한 상황 때문에 계획을 일부 수정해야 했습니다. 초반 설계과정에서는 모든 이미지를 gif로 변환을 시킨 후 이를 s3에 저장시키는 것이였으나, 하나의 gif를 만들기 위해서는 평균 100개정도의 이미지가 사용되어야 하기 때문에 불필요한 데이터베이스 낭비가 발생 할 수 있었습니다. 따라서 이를 캔버스에 애니메이션화 시키는 방법으로 변경시켰으나, 이러한 상황을 미리 기획단계에 구체적으로 고민하고 설계했다면 구현에 더욱 집중할 수 있을 것 같다는 아쉬움이 남아 아키텍처의 중요성을 상기했습니다.
