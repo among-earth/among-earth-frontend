@@ -8,7 +8,6 @@ import LandmarkSearch from './LandmarkSearch';
 import Maps from './Maps';
 import Button from './Button';
 import Modal from './Modal';
-import Header from './Header';
 import Footer from './Footer';
 import { getNearestPlaces } from '../utils/api';
 import { MESSAGES } from '../constants';

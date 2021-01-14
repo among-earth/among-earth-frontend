@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 
-import Header from './Header';
 import Footer from './Footer';
 import Loading from './Loading';
 import { delay } from '../utils/delay';

@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-import Header from './Header';
 import { URLS, MESSAGES } from '../constants';
 import { getTravelId } from '../utils';
 import { getAllPhoto } from '../utils/api';
