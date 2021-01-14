@@ -10,7 +10,8 @@ import Button from './Button';
 import Modal from './Modal';
 import Header from './Header';
 import Footer from './Footer';
-import { getNearestPlacesFromGoogle } from '../utils/api';
+import { getNearestPlaces } from '../utils/api';
+import { MESSAGES } from '../constants';
 
 function Directions({
   user,
@@ -29,15 +30,13 @@ function Directions({
   const [isLandmarkSelected, setLandmarkSelect] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
 
-  console.log(isModalOpen);
-
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
   useEffect(() => {
     (async () => {
       try {
-        const suggestions = await getNearestPlacesFromGoogle(landmarkList);
+        const suggestions = await getNearestPlaces(landmarkList);
         const newRecommendList = suggestions.map(suggestion => ({
           name: suggestion.name,
           id: suggestion.place_id,
@@ -47,7 +46,7 @@ function Directions({
         setRecommendList(newRecommendList);
       } catch (err) {
         const { response } = err;
-        if (response) alert('추천 경유지를 불러오는데 실패했습니다. 다시 시도해주세요.');
+        if (response) alert(MESSAGES.RECOMMENDS_FAIL);
       }
     })();
   }, [isLandmarkSelected]);
@@ -60,7 +59,6 @@ function Directions({
 
   return (
     <Container>
-      <Header />
       <FormWrapper onSubmit={submitTravelData}>
         {isCountrySelected ?
           <LandmarkSearch

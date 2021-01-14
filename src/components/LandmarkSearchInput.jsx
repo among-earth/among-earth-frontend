@@ -4,14 +4,19 @@ import PropTypes from 'prop-types';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import styled from 'styled-components';
 
+import Error from './Error';
 import { selectLastWord } from '../utils';
+import { MESSAGES } from '../constants';
+import { landmarkSearchOptions } from '../constants/options';
 
 function LandmarkSearchInput({
   inputValue,
   countryCode,
-  setInputValue,
   selectLandmark,
   setLandmarkSelect,
+  error,
+  onError,
+  onChange,
 }) {
   const handleInitialLandmark = async value => {
     const results = await geocodeByAddress(value);
@@ -28,32 +33,33 @@ function LandmarkSearchInput({
     setLandmarkSelect(true);
   };
 
-  const searchOptions = {
-    componentRestrictions: { country: countryCode },
-    type: ['tourist_attraction'],
-  };
-
   return (
     <PlacesAutocomplete
+      onError={onError}
       value={inputValue}
-      onChange={setInputValue}
+      onChange={val => onChange(val)}
       onSelect={handleInitialLandmark}
-      searchOptions={searchOptions}
+      searchOptions={landmarkSearchOptions(countryCode)}
       shouldFetchSuggestions={inputValue.length > 1}
       debounce={1000}
     >
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
         <Wrapper>
-          <input {...getInputProps({ placeholder: '가고 싶은 랜드마크를 입력 해 주세요.' })} />
+          <input {...getInputProps({ placeholder: MESSAGES.LANDMARK_SEARCH })} />
           {loading ? <Suggestion>...Loading</Suggestion> : null}
-          {suggestions.map(item => {
+          {error &&
+              <Error>
+                <h1>{MESSAGES.ZERO_RESULT}</h1>
+              </Error>
+            }
+          {suggestions.map(suggestion => {
             const style = {
-              color: item.active ? '#eba13d' : '#efe1d9',
-              borderBottom: item.active ? '1px solid #eba13d' : 'none',
+              color: suggestion.active ? '#eba13d' : '#efe1d9',
+              borderBottom: suggestion.active ? '1px solid #eba13d' : 'none',
             };
             return (
-              <Suggestion key={item.description} {...getSuggestionItemProps(item, { style })}>
-                {item.description}
+              <Suggestion key={suggestion.description} {...getSuggestionItemProps(suggestion, { style })}>
+                {suggestion.description}
               </Suggestion>
             );
           })}
@@ -87,7 +93,9 @@ export default LandmarkSearchInput;
 LandmarkSearchInput.propTypes = {
   inputValue: PropTypes.string.isRequired,
   countryCode: PropTypes.string.isRequired,
-  setInputValue: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   selectLandmark: PropTypes.func.isRequired,
   setLandmarkSelect: PropTypes.func.isRequired,
+  onError: PropTypes.func.isRequired,
+  error: PropTypes.bool.isRequired,
 };

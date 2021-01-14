@@ -8,11 +8,13 @@ import Header from './Header';
 import Footer from './Footer';
 
 function Loading() {
+  const size = '5%';
+
   return (
     <Wrapper>
       <Header />
       <h1>Loading...</h1>
-      <ReactLoading type='balls' color={theme.orangeYellow} width={'5%'} height={'5%'} />
+      <ReactLoading type='balls' color={theme.orangeYellow} width={size} height={size} />
       <Footer />
     </Wrapper>
   );

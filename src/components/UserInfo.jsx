@@ -4,13 +4,15 @@ import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
 
-import Header from './Header';
 import Footer from './Footer';
+import Error from './Error';
+import { ROUTES, MESSAGES } from '../constants';
 import { wooble } from './styles/keyframes';
 
 function UserInfo({ onLogin }) {
   const history = useHistory();
   const [inputValue, setInputValue] = useState('');
+  const [error, setError] = useState(false);
 
   const handleInputChange = ev => {
     const { value } = ev.target;
@@ -22,18 +24,17 @@ function UserInfo({ onLogin }) {
     ev.preventDefault();
 
     if(inputValue.length < 2) {
-      alert('닉네임은 한 글자 이상 입력 해 주세요.');
+      setError(true);
       setInputValue('');
       return;
     }
 
     onLogin(inputValue);
-    history.push('/directions');
+    history.push(ROUTES.DIRECTIONS);
   };
 
   return (
     <Container>
-      <Header />
       <Wrapper>
         <span>당신의 닉네임을 입력해주세요.</span>
         <form onSubmit={submitUserNickname}>
@@ -47,6 +48,9 @@ function UserInfo({ onLogin }) {
           />
           <input type='submit' value='OK!'/>
         </form>
+        {error &&
+          <Error>{MESSAGES.NICKNAME_LENGTH}</Error>
+        }
       </Wrapper>
       <Footer />
     </Container>

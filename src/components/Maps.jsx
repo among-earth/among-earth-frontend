@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { GoogleMap, DirectionsRenderer } from '@react-google-maps/api';
 
 import { computeTotalDistance } from '../utils';
+import { MESSAGES } from '../constants';
+import { mapStyleOptions, mapOptions, polylineOptions } from '../constants/options';
 
 function Maps({ landmarkList, setTotalDistance, setPoints }) {
   const [map, setMap] = useState(null);
@@ -39,7 +41,6 @@ function Maps({ landmarkList, setTotalDistance, setPoints }) {
     };
 
     directionsService.route(request, (result, status) => {
-      console.log(result, 'result');
       if (status === google.maps.DirectionsStatus.OK) {
         const totalDistance = computeTotalDistance(result);
         const { legs } = result.routes[0];
@@ -68,7 +69,7 @@ function Maps({ landmarkList, setTotalDistance, setPoints }) {
         setMarkers(true);
         setTotalDistance(totalDistance);
       } else {
-        console.error('error fetching directions', result, status);
+        alert(MESSAGES.MAP_FAIL);
       }
     });
 
@@ -79,29 +80,9 @@ function Maps({ landmarkList, setTotalDistance, setPoints }) {
     setMap(null);
   }, []);
 
-  const polylineOptions = {
-    polylineOptions: {
-      strokeColor: 'red',
-      strokeWeight: 6,
-      strokeOpacity: 0.8,
-    },
-  };
-
-  const styleOptions = {
-    width: '600px',
-    height: '400px',
-    borderRadius: '10px',
-  };
-
-  const mapOptions = {
-    mapTypeId: 'satellite',
-    streetViewControl: false,
-    mapTypeControl: false,
-  };
-
   return (
     <GoogleMap
-      mapContainerStyle={styleOptions}
+      mapContainerStyle={mapStyleOptions}
       zoom={13}
       onLoad={onLoad}
       onUnmount={onUnmount}

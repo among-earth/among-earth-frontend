@@ -4,10 +4,10 @@ import { useHistory } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-import { getAllPhoto } from '../utils/api';
 import Header from './Header';
-
-import { IoAirplane } from 'react-icons/io5';
+import { URLS, MESSAGES } from '../constants';
+import { getTravelId } from '../utils';
+import { getAllPhoto } from '../utils/api';
 
 function Travels() {
   const history = useHistory();
@@ -16,11 +16,13 @@ function Travels() {
     nickname: state.user.nickname,
   }));
 
-  const moveToTravels = e => {
-    const { value } = e.target;
-    const pathId = value.substring(0, 36);
+  const moveToTravels = ev => {
+    ev.preventDefault();
 
-    history.push(`/travels/${pathId}`);
+    const { value } = ev.target;
+    const travelId = getTravelId(value);
+
+    history.push(`/travels/${travelId}`);
   };
 
   useEffect(() => {
@@ -31,31 +33,29 @@ function Travels() {
         setAllImages(images);
       } catch(err) {
         const { response } = err;
-        if(response) alert('모든 여행을 불러오는데 실패했습니다. 다시 시도해주세요.');
+        if(response) alert(MESSAGES.GET_PHOTOS_FAIL);
       }
     })();
   }, []);
 
   return (
     <TravelsContainer>
-      <Header />
       <h1><span>{nickname}님,</span> 여행은 즐거우셨나요? <p>다른 여행을 떠나볼까요?✈️</p></h1>
       <GridContainer>
       {allImages && allImages.map(image => {
         const { path, time } = image;
-        const route = `https://among-earth.s3.ap-northeast-2.amazonaws.com/${path}`;
-          return (
-            <ImageContainer key={time}>
-              <img src={route}></img>
-              <Contents>
-                <button onClick={() => moveToTravels} value={path}>
-                  <IoAirplane/>
-                </button>
-                <div>{time}</div>
-              </Contents>
-            </ImageContainer>
-          );
-        })}
+        const route = `${URLS.AWS_S3}/${path}`;
+
+        return (
+          <ImageContainer key={path}>
+            <img src={route}></img>
+            <Contents>
+              <button onClick={ev => moveToTravels(ev)} value={path}>GO!</button>
+              <div>{time}</div>
+            </Contents>
+          </ImageContainer>
+        );
+      })}
       </GridContainer>
     </TravelsContainer>
   );
@@ -125,12 +125,13 @@ const Contents = styled.div`
     border: none;
     width: 50px;
     height: 50px;
-    font-size: 25px;
+    font-size: 20px;
     right: 0;
     margin-right: 10px;
     color: white;
     cursor: pointer;
     outline: none;
+    font-family: 'Limelight', cursive;
   }
 
   div {

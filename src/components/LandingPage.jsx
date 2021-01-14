@@ -5,18 +5,18 @@ import spinAirplane from '../assets/spinAirplane.png';
 import bg from '../assets/bg.mp4';
 import Button from './Button';
 import { textSpin } from './styles/keyframes';
+import { ROUTES } from '../constants';
 
 function LandingPage() {
   return (
     <Container>
       <TitleContainer>
-        <div className="circTxt"></div>
         <span>AMONG</span>
         <span>EARTH</span>
       </TitleContainer>
       <ButtonContainer>
         <img src={spinAirplane} alt='rotaionButton' />
-        <Button path={'/user'} isLanding={true} />
+        <Button path={ROUTES.USER} isLanding={true} />
       </ButtonContainer>
       <video
         type='video/mp4'

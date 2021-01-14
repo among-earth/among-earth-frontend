@@ -36,18 +36,6 @@ const LandingButton = styled.button`
 `;
 
 const StyledButton = styled.button`
-  /* width: 100px;
-  cursor: pointer;
-  text-align: center;
-  background-color: ${({theme}) => theme.green};
-  height: 50px;
-  border-radius: 6px;
-  color: ${({theme}) => theme.ivory};
-  font-family: 'Limelight', cursive;
-  all: unset;
-  font-size: 20px;
-  margin-top: 30px;
-  */
   width: 60px;
   cursor: pointer;
   text-align: center;

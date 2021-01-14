@@ -3,18 +3,20 @@ import styled from 'styled-components';
 
 import { VscGithub } from 'react-icons/vsc';
 
+import { URLS } from '../constants';
+
 function Footer() {
   return (
     <Container>
       <Socials>
-        <a href='www.google.com'>
+        <a href={URLS.GIHHUB}>
           <VscGithub />
         </a>
       </Socials>
       <p>
         Copyright ©2020
         <br />
-        Vanilla Coding
+        Dohee Kim
       </p>
       <div>
         <span>Made by DOHEE KIM</span>

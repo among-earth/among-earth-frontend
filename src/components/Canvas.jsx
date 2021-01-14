@@ -6,12 +6,11 @@ import styled from 'styled-components';
 
 import { wooble } from './styles/keyframes';
 import { sendBlobImage } from '../utils/api';
+import { ROUTES } from '../constants';
 
 function Canvas({ paths, travelId, points }) {
   const history = useHistory();
   const canvasRef = useRef(null);
-
-  console.log(paths.length);
 
   const draw  = (canvas, context, paths, frameCount) => {
     const img = new Image();
@@ -22,10 +21,11 @@ function Canvas({ paths, travelId, points }) {
     context.drawImage(img, 0, 0, img.width * scale, img.height * scale);
   };
 
-  const saveImage = e => {
-    e.preventDefault();
+  const saveImage = ev => {
+    ev.preventDefault();
+
     sendBlobImage(canvasRef, travelId, points);
-    history.push('/travels');
+    history.push(ROUTES.TRAVELS);
   };
 
   useEffect(() => {
@@ -36,7 +36,6 @@ function Canvas({ paths, travelId, points }) {
 
     let frameCount = 0;
     let animationFrameId;
-    let stop = false;
     let interval, now, newtime, then, elapsed;
 
     const startAnimating = fps => {
@@ -46,13 +45,12 @@ function Canvas({ paths, travelId, points }) {
     };
 
     const render = newtime => {
-      if(stop) return;
       now = newtime;
       elapsed = now - then;
 
       if (elapsed > interval) {
         then = now - (elapsed % interval);
-        context.clearRect(0, 0, 750, 750);
+        context.clearRect(0, 0, canvas.width, canvas.height);
         frameCount++;
 
         draw(canvas, context, paths, frameCount);
@@ -74,9 +72,9 @@ function Canvas({ paths, travelId, points }) {
       <CanvasContainer>
         <canvas ref={canvasRef}></canvas>
       </CanvasContainer>
-      <form onSubmit={saveImage}>
-        <SaveButton wooble value={points}>Finish Travel!</SaveButton>
-      </form>
+      {/* <form onSubmit={saveImage}> */}
+        <SaveButton type='button' wooble onClick={ev => saveImage(ev)}value={points}>Finish Travel!</SaveButton>
+      {/* </form> */}
     </>
   );
 }
@@ -99,6 +97,7 @@ const SaveButton = styled.button`
   border: none;
   font-size: 20px;
   margin-top: 20px;
+  outline: none;
 
   &:hover {
     animation: ${wooble} 1s 1;

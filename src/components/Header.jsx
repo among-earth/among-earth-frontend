@@ -1,17 +1,16 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-function Header() {
-  const history = useHistory();
-  const moveToMain = () => history.push('/');
+import { ROUTES } from '../constants';
 
+function Header() {
   return (
     <Container>
       <MenuWrapper>
-        <button onClick={moveToMain}>MAIN</button>
-        <button>TRAVELS</button>
+        <Link className='button' to={ROUTES.LANDING}>HOME</Link>
+        <Link className='button' to={ROUTES.TRAVELS}>TRAVELS</Link>
       </MenuWrapper>
       <TitleWrapper>
         <span>AMONG</span>
@@ -44,10 +43,6 @@ const TitleWrapper = styled.div`
   position: fixed;
   margin: 0 auto;
   width: 100%;
-
-  span {
-    cursor: pointer;
-  }
 `;
 
 const MenuWrapper = styled.div`
@@ -55,21 +50,19 @@ const MenuWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  button {
+  .button {
+    color: ${({theme}) => theme.orangeYellow};
     font-size: 18px;
     letter-spacing: 2;
     cursor: pointer;
     border: none;
     background: none;
     font-family: 'Limelight', cursive;
-    color: ${({theme}) => theme.orangeYellow};
     font-size: 22px;
     z-index: 999;
     outline: none;
-  }
-
-  button:first-child {
     margin: 30px;
+    text-decoration: none;
   }
 `;
 

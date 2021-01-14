@@ -5,6 +5,10 @@ const selectLastWord = value => {
   return splittedArray[len - 1];
 };
 
+const getTravelId = value => {
+  return value.substring(0, 36);
+};
+
 const computeTotalDistance = result => {
   let total = 0;
   const myroute = result.routes[0];
@@ -16,4 +20,4 @@ const computeTotalDistance = result => {
   return total;
 };
 
-export { selectLastWord, computeTotalDistance };
+export { selectLastWord, computeTotalDistance, getTravelId };

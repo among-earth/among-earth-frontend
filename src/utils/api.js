@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const getNearestPlacesFromGoogle = async landmarkList => {
+import { MESSAGES } from '../constants';
+
+const getNearestPlaces = async landmarkList => {
   if(!landmarkList) return;
 
   const { coordinates , id} = landmarkList[0];
-
-  console.log(landmarkList);
 
   try {
     const result = await axios.get('http://localhost:8080/directions', {
@@ -18,12 +18,14 @@ const getNearestPlacesFromGoogle = async landmarkList => {
 
     return result.data;
   } catch (err) {
-    console.log(err);
+    const { response } = err;
+    if (response) alert(MESSAGES.RECOMMENDS_FAIL);
   }
 };
 
 const getAllPhoto = async () => {
   let copyImages;
+
   try {
     const result = await axios.get('http://localhost:8080/travels');
 
@@ -38,54 +40,28 @@ const getAllPhoto = async () => {
     copyImages = [...images];
   } catch (err) {
     const { response } = err;
-    if (response) alert('이미지를 불러들이는데 실패했습니다. 다시 시도해주세요.');
+    if (response) alert(MESSAGES.GET_PHOTOS_FAIL);
   }
 
   return copyImages;
 };
 
-const postAllPoints = async (paths, travelId) => {
-  if(!paths) return;
+const getAllImagePaths = async urls => {
+  let copyPaths = [];
 
   try {
-    const result = await axios.post(`http://localhost:8080/travels/${travelId}`, {
-      paths: paths,
-    });
+    const data = await Promise.all(urls.map(url => fetch(url)));
 
-    return result.data;
+    for (let item of data) {
+      const { url } = item;
+      copyPaths.push(url);
+    }
+
+    return copyPaths;
   } catch (err) {
-    console.log(err);
+    const { response } = err;
+    if (response) alert(MESSAGES.GET_PHOTOS_FAIL);
   }
-};
-
-const fetchStreetView = async (points, travelId) => {
-  if(!points) return;
-
-  const urls = [];
-  const results = [];
-
-  for(let i = 0; i < points.length; i++) {
-    const { lat, lng, head } = points[i];
-    urls.push(`https://maps.googleapis.com/maps/api/streetview?size=1000x640&location=${lat},${lng}&fov=80&heading=${head}&key=AIzaSyDbRTVExbnqlexkB6Z8w9Sym3KcR2_1PKY`);
-  }
-
-  try {
-    const result = urls.reduce((prevPrms, url) => (
-      prevPrms.then(async prevRes => {
-        const currRes = await fetch(url);
-        return [...prevRes, currRes];
-      })
-    ), Promise.resolve([]));
-
-    result.then(data => {
-      results.push(data);
-    });
-
-     return results;
-  } catch (err) {
-    console.error(err);
-  }
-
 };
 
 const sendBlobImage = async (canvasRef, travelId, points) => {
@@ -116,14 +92,14 @@ const sendBlobImage = async (canvasRef, travelId, points) => {
       },
     });
   } catch (err) {
-    console.log(err);
+    const { response } = err;
+    if (response) alert(MESSAGES.PHOTO_FAIL);
   }
 };
 
 export {
-  getNearestPlacesFromGoogle,
-  postAllPoints,
-  fetchStreetView,
+  getNearestPlaces,
+  getAllImagePaths,
   sendBlobImage,
   getAllPhoto,
 };

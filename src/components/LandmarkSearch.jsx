@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import LandmarkSearchInput from './LandmarkSearchInput';
 import Recommends from './Recommends';
 import SelectedLandmark from './SelectedLandmark';
-import Button from './Button';
 
 import { wooble } from './styles/keyframes';
 
@@ -19,12 +18,23 @@ function LandmarkSearch({
   openModal,
 }) {
   const [landmarkInputValue, setLandmarkInputValue] = useState('');
+  const [error, setError] = useState(false);
   const { name , code} = country;
+
+  const handleError = () => {
+    setError(true);
+  };
+
+  const handleInputChange = value => {
+    if (error) setError(false);
+
+    setLandmarkInputValue(value);
+  };
 
   const addLandmark = ev => {
     ev.preventDefault();
+
     const { name, id, value, className} = ev.target;
-    console.log(name, id, value);
 
     selectLandmark([{
       name: name,
@@ -51,9 +61,11 @@ function LandmarkSearch({
           <LandmarkSearchInput
             inputValue={landmarkInputValue}
             countryCode={code}
-            setInputValue={setLandmarkInputValue}
             selectLandmark={selectLandmark}
             setLandmarkSelect={setLandmarkSelect}
+            error={error}
+            onError={handleError}
+            onChange={handleInputChange}
           />
         </LandmarkWrapper>
       }

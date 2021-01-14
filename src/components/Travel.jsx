@@ -7,6 +7,8 @@ import Header from './Header';
 import Footer from './Footer';
 import Loading from './Loading';
 import { delay } from '../utils/delay';
+import { MESSAGES, URLS } from '../constants';
+import { getAllImagePaths } from '../utils/api';
 
 const Canvas = lazy(async () => {
   await delay(1600);
@@ -18,32 +20,10 @@ function Travel() {
   const [imagePaths, setImagePaths] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { nickname, travelId, points } = useSelector(state => ({
-    nickname: state.user.nickname,
+  const { travelId, points } = useSelector(state => ({
     travelId: state.directions.id,
     points: state.directions.points,
   }));
-
-  const getAllImagePaths = async urls => {
-    let copyPaths = [];
-    setIsLoading(true);
-
-    try {
-      const data = await Promise.all(urls.map(url => fetch(url)));
-
-      for (let item of data) {
-        const { url } = item;
-        copyPaths.push(url);
-      }
-
-      setImagePaths([...copyPaths]);
-    } catch (err) {
-      const { response } = err;
-      if (response) alert('이미지 경로를 불러들이는데 실패했습니다. 다시 시도해주세요.');
-    }
-
-    setIsLoading(false);
-  };
 
   useEffect(() => {
     if (points) {
@@ -51,7 +31,7 @@ function Travel() {
 
       points.forEach(point => {
         const { lat, lng, head } = point;
-        urlList.push(`https://maps.googleapis.com/maps/api/streetview?size=640x640&pitch=30&fov=100&location=${lat},${lng}&heading=${head}&source=outdoor&key=AIzaSyDXgeijd6uNjxKp9CyhpY-z_KKKYH5mXZ8`);
+        urlList.push(`${URLS.GOOGLE_STREETVIEW}&location=${lat},${lng}&heading=${head}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`);
       });
 
       setStreetviewUrls([...urlList]);
@@ -59,12 +39,22 @@ function Travel() {
   }, []);
 
   useEffect(() => {
-    getAllImagePaths(streetviewUrls);
+    (async function () {
+      try {
+        setIsLoading(true);
+        const paths = await getAllImagePaths(streetviewUrls);
+
+        setImagePaths([...paths]);
+        setIsLoading(false);
+      } catch (err) {
+        const { response } = err;
+        if (response) alert(MESSAGES.PHOTO_FAIL);
+      }
+    })();
   }, [streetviewUrls]);
 
   return (
     <TravelContainer>
-      <Header />
       <Suspense fallback={<Loading />}>
         {isLoading
           ? <Loading />

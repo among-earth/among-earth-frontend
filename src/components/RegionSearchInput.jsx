@@ -4,6 +4,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import PlacesAutocomplete, { geocodeByAddress } from 'react-places-autocomplete';
 
+import Error from './Error';
+import { MESSAGES } from '../constants';
+import { regionSearchOptions } from '../constants/options';
+
 function RegionSearchInput({
   setCountry,
   setCountrySelect,
@@ -20,28 +24,24 @@ function RegionSearchInput({
     setCountrySelect(true);
   };
 
-  const searchOptions = {
-    types: ['(regions)'],
-  };
-
   return (
     <PlacesAutocomplete
       onError={onError}
       value={inputValue}
       onChange={val => onChange(val)}
       onSelect={handleSelect}
-      searchOptions={searchOptions}
+      searchOptions={regionSearchOptions}
       shouldFetchSuggestions={inputValue.length > 1}
       debounce={1000}
     >
       {({ getInputProps, suggestions, getSuggestionItemProps, loading, displaySuggestions }) => (
         <Wrapper>
-          <input {...getInputProps({ placeholder: '가고 싶은 나라를 입력 해 주세요.' })} />
+          <input {...getInputProps({ placeholder: MESSAGES.REGION_SEARCH })} />
             {loading ? <Suggestion>...Loading</Suggestion> : null}
             {error &&
-              <ErrorBox>
-                <h1>검색 결과가 없습니다.</h1>
-              </ErrorBox>
+              <Error>
+                <h1>{MESSAGES.ZERO_RESULT}</h1>
+              </Error>
             }
             {suggestions.map(suggestion => {
               const style = {
@@ -64,20 +64,6 @@ const Wrapper = styled.div`
   margin-top: 20px;
 
 `;
-
-const ErrorBox = styled.div`
-  width: 100%;
-  border-bottom: 1px solid #BC3A46;
-  text-align: center;
-
-  h1 {
-    color: ${({theme}) => theme.coralRed};
-    font-size: 20px;
-    margin-top: 30px;
-    margin-bottom: 10px;
-  }
-`;
-
 
 const Suggestion = styled.div`
   width: 340px;
