@@ -17,30 +17,31 @@ function Maps({ landmarkList, setTotalDistance, setPoints }) {
     const directionsService = new google.maps.DirectionsService();
     const directionsDisplay = new google.maps.DirectionsRenderer();
 
-    const origin = new google.maps.LatLng(landmarkList[0].coordinates.lat, landmarkList[0].coordinates.lng);
-    const destination = new google.maps.LatLng(landmarkList[landmarkList.length - 1].coordinates.lat, landmarkList[landmarkList.length - 1].coordinates.lng);
+    let origin;
+    let destination;
+    let waypoints = [];
 
-    const waypoints = [];
+    const originIdx = 0;
+    const waypointsIdx = 1;
+    const lastIdx = landmarkList.length - 1;
 
-    const routes = landmarkList.splice(1, 3);
+    landmarkList.forEach((landmark, idx) => {
+      const { lat, lng } = landmark.coordinates;
 
-    for(let i = 0; i < routes.length; i++) {
-      const location = { location: new google.maps.LatLng(routes[i].coordinates.lat, routes[i].coordinates.lng)};
-      waypoints.push(location);
-    }
-    // const waypoints = [];
-    // const location = { location: new google.maps.LatLng(landmarkList[1].coordinates.lat, landmarkList[1].coordinates.lng) };
-    // waypoints.push(location);
+      if(idx === originIdx) origin = new google.maps.LatLng(lat, lng);
+      if(idx === waypointsIdx) destination = new google.maps.LatLng(lat, lng);
+      if(idx === lastIdx) waypoints = new google.maps.LatLng(lat, lng);
+    });
 
-    const request = {
+    const requestOption = {
       origin: origin,
       destination: destination,
       travelMode: google.maps.TravelMode.WALKING,
-      waypoints: waypoints,
+      waypoints: [{ location: waypoints }],
       optimizeWaypoints: true,
     };
 
-    directionsService.route(request, (result, status) => {
+    directionsService.route(requestOption, (result, status) => {
       if (status === google.maps.DirectionsStatus.OK) {
         const totalDistance = computeTotalDistance(result);
         const { legs } = result.routes[0];
@@ -64,6 +65,7 @@ function Maps({ landmarkList, setTotalDistance, setPoints }) {
             });
           }
         }
+
         setPoints(copyPoints);
         setDirections(result);
         setMarkers(true);

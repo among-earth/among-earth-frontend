@@ -57,6 +57,8 @@ const getAllImagePaths = async urls => {
       copyPaths.push(url);
     }
 
+    console.log(copyPaths);
+
     return copyPaths;
   } catch (err) {
     const { response } = err;
@@ -69,13 +71,13 @@ const sendBlobImage = async (canvasRef, travelId, points) => {
   const dataUrl = canvas.toDataURL('image/png');
 
   let blobBin = atob(dataUrl.split(',')[1]);
-  let array = [];
+  let fileArr = [];
 
   for(let i = 0; i < blobBin.length; i++) {
-    array.push(blobBin.charCodeAt(i));
+    fileArr.push(blobBin.charCodeAt(i));
   }
 
-  const file = new Blob([new Uint8Array(array)], { type: 'image/png' });
+  const file = new Blob([new Uint8Array(fileArr)], { type: 'image/png' });
 
   let formData = new FormData();
   formData.append('travelImage', file, `${travelId}.png`);
