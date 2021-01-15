@@ -20,9 +20,10 @@ function Directions({
   selectLandmark,
   totalDistance,
   calculateTotalDistance,
-  points,
   getAllPoints,
   travelId,
+  deleteLandmark,
+  deleteSelectedLandmark,
 }) {
   const [recommendList, setRecommendList] = useState([]);
   const [isCountrySelected, setCountrySelect] = useState(false);
@@ -30,7 +31,18 @@ function Directions({
   const [isModalOpen, setModalOpen] = useState(false);
 
   const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
+  const closeModal = () => {
+    deleteLandmark(landmarkList);
+    setModalOpen(false);
+  };
+
+  const onDelete = ev => {
+    ev.preventDefault();
+
+    const { value } = ev.target;
+
+    deleteSelectedLandmark(value);
+  };
 
   useEffect(() => {
     (async () => {
@@ -68,6 +80,7 @@ function Directions({
             recommendList={recommendList}
             openModal={openModal}
             isLandmarkSelected={isLandmarkSelected}
+            onDelete={onDelete}
           />
         :
           <RegionSearch
@@ -108,7 +121,6 @@ const FormWrapper = styled.form`
   flex-direction: column;
 `;
 
-
 const Container = styled.div`
   position: relative;
   width: 100vw;
@@ -142,13 +154,14 @@ Directions.propTypes = {
   user: PropTypes.shape({
     nickname: PropTypes.string.isRequired,
   }).isRequired,
-  country: PropTypes.string.isRequired,
+  country: PropTypes.object.isRequired,
   landmarkList: PropTypes.array.isRequired,
   selectCountry: PropTypes.func.isRequired,
   selectLandmark: PropTypes.func.isRequired,
   totalDistance: PropTypes.number.isRequired,
   calculateTotalDistance: PropTypes.func.isRequired,
-  points: PropTypes.array.isRequired,
   getAllPoints: PropTypes.func.isRequired,
   travelId: PropTypes.string.isRequired,
+  deleteLandmark: PropTypes.func.isRequired,
+  deleteSelectedLandmark: PropTypes.func.isRequired,
 };

@@ -1,6 +1,13 @@
 import { connect } from 'react-redux';
 
-import { calculateTotalDistance, selectCountry, selectLandmark, getAllPoints } from '../redux/directions/directions.actions';
+import {
+  calculateTotalDistance,
+  selectCountry,
+  selectLandmark,
+  getAllPoints,
+  deleteLandmark,
+  deleteSelectedLandmark,
+} from '../redux/directions/directions.actions';
 
 import Directions from '../components/Directions';
 
@@ -17,6 +24,8 @@ const mapDispatchToProps = dispatch => ({
   selectLandmark: action => dispatch(selectLandmark(action)),
   calculateTotalDistance: action => dispatch(calculateTotalDistance(action)),
   getAllPoints: action => dispatch(getAllPoints(action)),
+  deleteLandmark: action => dispatch(deleteLandmark(action)),
+  deleteSelectedLandmark: action => dispatch(deleteSelectedLandmark(action)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Directions);

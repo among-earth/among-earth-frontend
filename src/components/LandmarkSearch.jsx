@@ -16,6 +16,7 @@ function LandmarkSearch({
   isLandmarkSelected,
   recommendList,
   openModal,
+  onDelete,
 }) {
   const [landmarkInputValue, setLandmarkInputValue] = useState('');
   const [error, setError] = useState(false);
@@ -52,7 +53,7 @@ function LandmarkSearch({
             recommendList={recommendList}
             landmarkList={landmarkList}
           />
-          <SelectedLandmark landmarkList={landmarkList} />
+          <SelectedLandmark landmarkList={landmarkList} onDelete={onDelete} />
           <ModalButton onClick={() => openModal}>GO!</ModalButton>
         </RecommendsWrapper>
       :
@@ -128,4 +129,5 @@ LandmarkSearch.propTypes = {
   isLandmarkSelected: PropTypes.bool.isRequired,
   recommendList: PropTypes.array.isRequired,
   openModal: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
