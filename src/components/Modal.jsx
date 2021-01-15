@@ -10,14 +10,12 @@ import { MdReplay } from 'react-icons/md';
 function Modal({
   children,
   isModalOpen,
-  className,
   onClose,
 }) {
   return (
     <ModalPortal elementId='modal'>
       <ModalOverlay visible={isModalOpen} />
       <ModalWrapper
-        className={className}
         tabIndex={-1}
         isModalOpen={isModalOpen}
       >
@@ -117,8 +115,7 @@ const ModalInner = styled.div`
 export default Modal;
 
 Modal.propTypes = {
-  children: PropTypes.node,
-  isModalOpen: PropTypes.bool,
-  className: PropTypes.node,
+  children: PropTypes.node.isRequired,
+  isModalOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };

@@ -47,7 +47,7 @@ function Travels() {
 
         return (
           <ImageContainer key={path}>
-            <img src={route}></img>
+            <img src={route} alt='travels'></img>
             <Contents>
               <button onClick={ev => moveToTravels(ev)} value={path}>GO!</button>
               <div>{time}</div>

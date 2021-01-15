@@ -72,9 +72,7 @@ function Canvas({ paths, travelId, points }) {
       <CanvasContainer>
         <canvas ref={canvasRef}></canvas>
       </CanvasContainer>
-      {/* <form onSubmit={saveImage}> */}
-        <SaveButton type='button' wooble onClick={ev => saveImage(ev)}value={points}>Finish Travel!</SaveButton>
-      {/* </form> */}
+      <SaveButton type='button' wooble onClick={ev => saveImage(ev)}value={points}>Finish Travel!</SaveButton>
     </>
   );
 }

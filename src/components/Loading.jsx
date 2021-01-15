@@ -4,7 +4,6 @@ import ReactLoading from 'react-loading';
 
 import theme from './styles/theme';
 
-import Header from './Header';
 import Footer from './Footer';
 
 function Loading() {
@@ -12,7 +11,6 @@ function Loading() {
 
   return (
     <Wrapper>
-      <Header />
       <h1>Loading...</h1>
       <ReactLoading type='balls' color={theme.orangeYellow} width={size} height={size} />
       <Footer />

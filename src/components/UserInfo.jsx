@@ -39,6 +39,7 @@ function UserInfo({ onLogin }) {
         <span>당신의 닉네임을 입력해주세요.</span>
         <form onSubmit={submitUserNickname}>
           <input
+            data-testid='nameInput'
             onChange={handleInputChange}
             type='text'
             name='nickname'

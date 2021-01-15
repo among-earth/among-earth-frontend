@@ -15,12 +15,13 @@ function LandingPage() {
         <span>EARTH</span>
       </TitleContainer>
       <ButtonContainer>
-        <img src={spinAirplane} alt='rotaionButton' />
+        <img src={spinAirplane} alt='rotationButton' />
         <Button path={ROUTES.USER} isLanding={true} />
       </ButtonContainer>
       <video
         type='video/mp4'
         width='300px'
+        alt='backgroundVideo'
         src={bg}
         autoPlay
         loop

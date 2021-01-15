@@ -36,7 +36,7 @@ const directionsReducer = (state = initialState, { type, payload }) => {
     case types.DELETE_SELECTED_LANDMARK: {
       const prevList = state.landmarkList;
       const targetLandmarkId = payload.id;
-      console.log(payload)
+
       const filteredList = _.filter(prevList, landmark => landmark.id !== targetLandmarkId);
       return {
         ...state,
