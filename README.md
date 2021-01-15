@@ -10,7 +10,6 @@
 - [Stack](#Stack)
 - [Deploy](#Deploy)
 - [Project Process](#Project-Process)
-- [Team Log](#Team-Log)
 
 ## Introduction
 
@@ -116,7 +115,7 @@ npm start
 - Redux
 - Styled-components
 - Jest for unit-test
-- Enzyme for component-test
+- React-testing-library for component-test
 - ESLint
 
 #### Backend
@@ -150,7 +149,7 @@ npm start
 - Git Repo를 구분하여 Client와 Server를 독립적으로 관리
 - Git flow를 이용한 기능별 브랜치 관리
 
-## Challenge & Learning Point
+## Challenge&Learning Point
 
 #### 두 지점 사이의 좌표들 산출, 그리고 두 지점의 스트리트 뷰 카메라 앵글 설정
 
