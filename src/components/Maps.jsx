@@ -61,7 +61,6 @@ function Maps({ landmarkList, setTotalDistance, setPoints }) {
                 lat: segment.lat(),
                 lng: segment.lng(),
               });
-
             });
           }
         }

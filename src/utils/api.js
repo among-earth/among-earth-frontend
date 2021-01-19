@@ -19,6 +19,7 @@ const getNearestPlaces = async landmarkList => {
     return result.data;
   } catch (err) {
     const { response } = err;
+
     if (response) alert(MESSAGES.RECOMMENDS_FAIL);
   }
 };
@@ -40,6 +41,7 @@ const getAllPhoto = async () => {
     copyImages = [...images];
   } catch (err) {
     const { response } = err;
+
     if (response) alert(MESSAGES.GET_PHOTOS_FAIL);
   }
 
@@ -57,11 +59,10 @@ const getAllImagePaths = async urls => {
       copyPaths.push(url);
     }
 
-    console.log(copyPaths);
-
     return copyPaths;
   } catch (err) {
     const { response } = err;
+
     if (response) alert(MESSAGES.GET_PHOTOS_FAIL);
   }
 };
