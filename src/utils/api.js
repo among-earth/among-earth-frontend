@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
+
 import { MESSAGES } from '../constants';
 
 const getNearestPlaces = async landmarkList => {
@@ -8,7 +10,7 @@ const getNearestPlaces = async landmarkList => {
   const { coordinates , id} = landmarkList[0];
 
   try {
-    const result = await axios.get('http://localhost:8080/directions', {
+    const result = await axios.get('/directions', {
       params: {
         lat: coordinates.lat,
         lng: coordinates.lng,
@@ -28,7 +30,7 @@ const getAllPhoto = async () => {
   let copyImages;
 
   try {
-    const result = await axios.get('http://localhost:8080/travels');
+    const result = await axios.get('/travels');
 
     const images = result.data;
 
@@ -87,7 +89,7 @@ const sendBlobImage = async (canvasRef, travelId, points) => {
   try {
     await axios({
       method : 'POST',
-      url : `http://localhost:8080/travels/${travelId}`,
+      url : `/travels/${travelId}`,
       data: formData,
       headers: {
         'processData': false,
