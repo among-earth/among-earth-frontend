@@ -35,4 +35,4 @@ export {
   mapOptions,
   regionSearchOptions,
   landmarkSearchOptions,
-}
+};
