@@ -1,60 +1,152 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-function Directions({ user }) {
-  const userName = user.nickname;
-  const [isCountry, setCountry] = useState('');
+import styled from 'styled-components';
 
-  const handleInputChange = ev => {
-    console.log(ev.target.name);
-    setCountry(ev.target.value);
+import RegionSearch from './RegionSearch';
+import LandmarkSearch from './LandmarkSearch';
+import Maps from './Maps';
+import Button from './Button';
+import Modal from './Modal';
+import Footer from './Footer';
+import { getNearestPlaces } from '../utils/api';
+import { MESSAGES } from '../constants';
+
+function Directions({
+  user,
+  country,
+  landmarkList,
+  selectCountry,
+  selectLandmark,
+  totalDistance,
+  calculateTotalDistance,
+  getAllPoints,
+  travelId,
+  deleteLandmark,
+  deleteSelectedLandmark,
+}) {
+  const [recommendList, setRecommendList] = useState([]);
+  const [isCountrySelected, setCountrySelect] = useState(false);
+  const [isLandmarkSelected, setLandmarkSelect] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => {
+    deleteLandmark(landmarkList);
+    setModalOpen(false);
   };
+
+  const onDelete = ev => {
+    ev.preventDefault();
+
+    const { value } = ev.target;
+
+    deleteSelectedLandmark(value);
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const suggestions = await getNearestPlaces(landmarkList);
+        const newRecommendList = suggestions.map(suggestion => ({
+          name: suggestion.name,
+          id: suggestion.place_id,
+          coordinates: suggestion.geometry.location,
+        }));
+
+        setRecommendList(newRecommendList);
+      } catch (err) {
+        const { response } = err;
+        if (response) alert(MESSAGES.RECOMMENDS_FAIL);
+      }
+    })();
+  }, [isLandmarkSelected]);
 
   const submitTravelData = ev => {
     ev.preventDefault();
-    console.log(isCountry);
+
+    setModalOpen(true);
   };
 
   return (
-    <div>
-      <form onSubmit={submitTravelData}>
-        <div>
-          <span>안녕하세요 {userName}님</span>
-          <span>어느 나라로 가볼까요?</span>
-          <input
-            type='text'
-            name='country'
-            onChange={handleInputChange}
-            value={isCountry}
-            placeholder='로마'
+    <Container>
+      <FormWrapper onSubmit={submitTravelData}>
+        {isCountrySelected ?
+          <LandmarkSearch
+            landmarkList={landmarkList}
+            selectLandmark={selectLandmark}
+            setLandmarkSelect={setLandmarkSelect}
+            country={country}
+            recommendList={recommendList}
+            openModal={openModal}
+            isLandmarkSelected={isLandmarkSelected}
+            onDelete={onDelete}
           />
-        </div>
-        <div>
-          <span>가고 싶은 장소를 입력해 주세요.</span>
-          <input
-            type='text'
-            name='landmarks'
-            onChange={handleInputChange}
-            value={isCountry}
-            placeholder='로마'
+        :
+          <RegionSearch
+            user={user}
+            setCountry={selectCountry}
+            setCountrySelect={setCountrySelect}
           />
-        </div>
-        <div>
-          <button>트레비 분수</button>
-          <button>콜로세움</button>
-          <button>피사의 사탑</button>
-        </div>
-      </form>
-      <div>
-          <div>1</div>
-          <div>2</div>
-          <div>3</div>
-          <div>4</div>
-          <div>5</div>
-      </div>
-    </div>
+        }
+      </FormWrapper>
+      {isModalOpen && (
+        <Modal
+          isModalOpen={isModalOpen}
+          closable={true}
+          maskClosable={true}
+          onClose={closeModal}
+          travelId={travelId}
+        >
+          <h1>이 경로로 여행을 시작할까요?</h1>
+          <h3>총 거리는 {totalDistance}m 입니다.</h3>
+          <Maps
+            landmarkList={landmarkList}
+            setTotalDistance={calculateTotalDistance}
+            setPoints={getAllPoints}
+          />
+          <Button path={`/travels/${travelId}`} isLanding={false}>Lets go!</Button>
+        </Modal>
+      )}
+      <Footer />
+    </Container>
   );
 }
+
+const FormWrapper = styled.form`
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const Container = styled.div`
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: ${({theme}) => theme.green};
+
+  input {
+    all: unset;
+  }
+
+  input[type='text'] {
+    width: 300px;
+    background: #efe1d9;
+    padding: 0 20px;
+    height: 50px;
+    border-radius: 6px;
+
+    &:focus {
+    background: #f7efeb;
+    }
+  }
+`;
 
 export default Directions;
 
@@ -62,4 +154,14 @@ Directions.propTypes = {
   user: PropTypes.shape({
     nickname: PropTypes.string.isRequired,
   }).isRequired,
+  country: PropTypes.object.isRequired,
+  landmarkList: PropTypes.array.isRequired,
+  selectCountry: PropTypes.func.isRequired,
+  selectLandmark: PropTypes.func.isRequired,
+  totalDistance: PropTypes.number.isRequired,
+  calculateTotalDistance: PropTypes.func.isRequired,
+  getAllPoints: PropTypes.func.isRequired,
+  travelId: PropTypes.string.isRequired,
+  deleteLandmark: PropTypes.func.isRequired,
+  deleteSelectedLandmark: PropTypes.func.isRequired,
 };

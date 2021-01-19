@@ -1,10 +1,18 @@
 import { createGlobalStyle } from 'styled-components';
 
+
 const GlobalStyle = createGlobalStyle`
   body {
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
-    Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-    font-weight: 600;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 400;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    background-color: ${({theme})=> theme.green}};
+
+  .root {
+    width: 100%;
+    height: 100%;
   }
 `;
 
