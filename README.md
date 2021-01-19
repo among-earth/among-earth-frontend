@@ -6,7 +6,7 @@ Among Earth는 **스트리트 뷰 이미지를 이용해 가상 여행을 경험
 ### 미리 보기 🎬
 
 ![Main](/readmeAssets/among-earth-gif.gif)
-![StandUp](https://youtu.be/jMw5MIxLY3o?t=3998)
+![StandUp](https://youtube/jMw5MIxLY3o?t=3998)
 
 ### 바로 이동하기 👉
 
