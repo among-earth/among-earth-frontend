@@ -10,13 +10,15 @@ const getNearestPlaces = async landmarkList => {
   const { coordinates , id } = landmarkList[0];
 
   try {
-    const result = await axios.get('https://www.among-earth.site/directions', {
+    const result = await axios.get('https://api.among-earth.site/directions', {
       params: {
         lat: coordinates.lat,
         lng: coordinates.lng,
         id: id,
       },
     });
+
+    console.log(result);
 
     return result.data;
   } catch (err) {
