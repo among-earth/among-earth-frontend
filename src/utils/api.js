@@ -7,10 +7,10 @@ import { MESSAGES } from '../constants';
 const getNearestPlaces = async landmarkList => {
   if(!landmarkList) return;
 
-  const { coordinates , id} = landmarkList[0];
+  const { coordinates , id } = landmarkList[0];
 
   try {
-    const result = await axios.get('/directions', {
+    const result = await axios.get('https://api.among-earth.site/directions', {
       params: {
         lat: coordinates.lat,
         lng: coordinates.lng,
