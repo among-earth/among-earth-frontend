@@ -58,7 +58,7 @@ const getAllImagePaths = async urls => {
     for(let url of urls) {
       const res = await fetch(url);
       const data = await res.json();
-
+      console.log(res);
       console.log(data);
       copyPaths.push(data);
     }
