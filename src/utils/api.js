@@ -2,7 +2,7 @@ import axios from 'axios';
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
-import { MESSAGES } from '../constants';
+import { MESSAGES, ROUTES } from '../constants';
 
 const getNearestPlaces = async landmarkList => {
   if(!landmarkList) return;
@@ -10,7 +10,7 @@ const getNearestPlaces = async landmarkList => {
   const { coordinates, id } = landmarkList[0];
 
   try {
-    const result = await axios.get('https://api.among-earth.site/directions', {
+    const result = await axios.get(ROUTES.DIRECTIONS, {
       params: {
         lat: coordinates.lat,
         lng: coordinates.lng,
@@ -30,12 +30,13 @@ const getAllPhoto = async () => {
   let copyImages;
 
   try {
-    const result = await axios.get('/travels');
+    const result = await axios.get(ROUTES.TRAVELS);
 
     const images = result.data;
 
     for (let image of images) {
-      let { time } = image;
+      const { time } = image;
+
       const newTime = new Date(time);
       image.time = `${newTime.toLocaleDateString()} ${newTime.toLocaleTimeString()}`;
     }
@@ -54,12 +55,18 @@ const getAllImagePaths = async urls => {
   let copyPaths = [];
 
   try {
-    const data = await Promise.all(urls.map(url => fetch(url)));
-
-    for (let item of data) {
-      const { url } = item;
-      copyPaths.push(url);
+    for(let url of urls) {
+      const data = await fetch(url);
+      console.log(data);
+      copyPaths.push(data);
     }
+    // // }
+    // const data = await Promise.all(urls.map(url => fetch(url)));
+
+    // for (let item of data) {
+    //   const { url } = item;
+    //   copyPaths.push(url);
+    // }
 
     return copyPaths;
   } catch (err) {

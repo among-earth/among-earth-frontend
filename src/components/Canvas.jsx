@@ -14,10 +14,12 @@ function Canvas({ paths, travelId, points }) {
 
   const draw  = (canvas, context, paths, frameCount) => {
     const img = new Image();
+
     img.setAttribute('crossorigin', 'anonymous');
     img.src = paths[frameCount];
 
     let scale = Math.max(canvas.width / img.width, canvas.height / img.height);
+
     context.drawImage(img, 0, 0, img.width * scale, img.height * scale);
   };
 
@@ -31,6 +33,7 @@ function Canvas({ paths, travelId, points }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
+
     canvas.width = 750;
     canvas.height = 750;
 
