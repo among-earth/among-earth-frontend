@@ -55,10 +55,11 @@ const getAllImagePaths = async urls => {
   let copyPaths = [];
 
   try {
-    const data = await Promise.all(urls.map(url => fetch(url)));
+    const requests = urls.map(url => fetch(url));
+    const results = await Promise.all(requests);
 
-    for (let item of data) {
-      const { url } = item;
+    for (let result of results) {
+      const { url } = result;
 
       copyPaths.push(url);
     }
